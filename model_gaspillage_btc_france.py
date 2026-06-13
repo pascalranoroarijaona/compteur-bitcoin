@@ -106,8 +106,8 @@ def calculate_opportunity_cost(share=0.10):  # 10% de part hypothétique
     current_date = date.today()
     
     total_mined_btc = calculate_mined_btc(start_block, current_block)
-    france_btc_past = total_mined_btc * share
-    value_eur_past = france_btc_past * price_eur
+    btc_past = total_mined_btc * share
+    value_eur_past = btc_past * price_eur
     total_euros_past = int(value_eur_past)  # En euros complets
     
     # Données historiques pour le graphique
@@ -125,7 +125,7 @@ def calculate_opportunity_cost(share=0.10):  # 10% de part hypothétique
     power_points, A, exponent = get_power_law_points(current_date)
     
     return {
-        'france_btc_past': france_btc_past,
+        'btc_past': btc_past,
         'total_euros_past': total_euros_past,
         'price_eur': price_eur,
         'share': share,
@@ -411,7 +411,7 @@ def generate_html():
 <body>
     <div class="container">
         <div class="left">
-            <h1>Compteur Bitcoin France</h1>
+            <h1>Compteur Bitcoin</h1>
             <p>Coût d'<span class="tooltip">opportunité<span class="tooltip-icon">?</span><span class="tooltiptext">Le coût d'opportunité est un terme économique qui désigne ce que vous perdez en choisissant une option plutôt qu'une autre. Ici, c'est le regret financier : "Et si la France avait dépensé de l'argent/énergie pour miner du Bitcoin au lieu d'autre chose (comme des impôts ou des subventions) ? Combien d'euros aurait-elle gagnés aujourd'hui ?"</span></span> si la France avait miné X% (sélectionnable ci-dessous) de la <span class="tooltip">puissance globale de hachage<span class="tooltip-icon">?</span><span class="tooltiptext">La puissance globale de hachage est la vitesse totale à laquelle tous les mineurs du monde font des calculs (hachages) pour résoudre les puzzles mathématiques du Bitcoin. Mesurée en EH/s (exahashs par seconde), c'est la "force de calcul" qui protège le réseau. Actuellement ~1000 EH/s.</span></span> du <span class="tooltip">réseau Bitcoin<span class="tooltip-icon">?</span><span class="tooltiptext">Le réseau Bitcoin est un système décentralisé mondial : un réseau d'ordinateurs (nœuds) qui valident et stockent la blockchain ensemble, sans banque centrale. Il inclut les mineurs (qui sécurisent), les nœuds (qui vérifient) et les utilisateurs (wallets). Miner X% de sa puissance signifie contribuer X% des calculs totaux pour gagner des récompenses.</span></span> depuis 2018. Mises à jour en temps réel toutes les 10 minutes.</p>
             
             <select id="shareSelect" class="share-select">
@@ -593,7 +593,7 @@ def generate_html():
 
         // Données embeddées initiales
         const initialTotalEuros = {result['total_euros_past']};
-        const initialBtc = {result['france_btc_past']};
+        const initialBtc = {result['btc_past']};
         const initialPrice = {result['price_eur']};
         const initialBlocks = {result['initial_blocks']};
         const histData = {json.dumps(result['hist_points'])};
@@ -715,7 +715,7 @@ def generate_html():
             // 2b. Tenter une première mise à jour complète (compteurs + graphiques)
             await updateData();
             //animateCounter('totalEurosCounter', {result['total_euros_past']}, 3000, ' €');
-            //animateCounter('btcCounter', {result['france_btc_past']}, 3000, ' BTC');
+            //animateCounter('btcCounter', {result['btc_past']}, 3000, ' BTC');
             //animateCounter('priceCounter', {result['price_eur']}, 2000, ' €');
             //animateCounter('blocksCounter', {result['initial_blocks']}, 2000, '');
             //animateCounter('mwhCounter', initialMw, 2000, ' MW');
@@ -739,7 +739,7 @@ def generate_html():
         //    document.getElementById('mwhCounter').textContent = '0';
         //    
         //    animateCounter('totalEurosCounter', {result['total_euros_past']}, 3000, ' €');
-        //    animateCounter('btcCounter', {result['france_btc_past']}, 3000, ' BTC');
+        //    animateCounter('btcCounter', {result['btc_past']}, 3000, ' BTC');
         //    animateCounter('priceCounter', {result['price_eur']}, 2000, ' €');
         //    animateCounter('blocksCounter', {result['initial_blocks']}, 2000, '');
         //    animateCounter('mwhCounter', initialMw, 2000, ' MW');
